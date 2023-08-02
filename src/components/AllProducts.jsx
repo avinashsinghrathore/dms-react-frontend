@@ -7,7 +7,9 @@ const AllProducts = () => {
   const [error, setError] = useState("");
 
   const getData = async () => {
-    const response = await fetch("http://localhost:8080/api/product/get-all-products");
+    const response = await fetch(
+      "http://localhost:8080/api/product/get-all-products"
+    );
 
     const result = await response.json();
 
@@ -22,9 +24,12 @@ const AllProducts = () => {
 
   // delete data
   const handleDelete = async (id) => {
-    const response = await fetch(`http://localhost:8080/api/product/delete-product/${id}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `http://localhost:8080/api/product/delete-product/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
 
     const result = await response.json();
 

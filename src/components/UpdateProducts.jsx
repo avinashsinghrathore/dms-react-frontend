@@ -1,28 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-const AddProducts = () => {
+const UpdateProducts = () => {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [brand, setBrand] = useState("");
   const [error, setError] = useState("");
 
+  const { id } = useParams();
   const navigate = useNavigate();
-  console.log(title, price, brand);
 
-  const handleSubmit = async (e) => {
+  // get single product data
+  const getSingleProduct = async () => {
+    const response = await fetch(`http://localhost:8080/api/product/${id}`);
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      console.log(result.error);
+      setError(result.error);
+    }
+    if (response.ok) {
+      setError("");
+      console.log("updated products", result);
+      setTitle(result.title);
+      setPrice(result.price);
+      setBrand(result.brand);
+    }
+  };
+
+  //send updated data to backend
+  const handleUpdated = async (e) => {
     e.preventDefault();
     const productDetails = { title, price, brand };
-    const response = await fetch(
-      "http://localhost:8080/api/product/add-product",
-      {
-        method: "POST",
-        body: JSON.stringify(productDetails),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    console.log(productDetails);
+    const response = await fetch(`http://localhost:8080/api/product/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(productDetails),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const result = await response.json();
 
     if (!response.ok) {
@@ -32,23 +51,18 @@ const AddProducts = () => {
     if (response.ok) {
       console.log(result);
       setError("");
-      setTitle("");
-      setPrice("");
-      setBrand("");
       navigate("/allProducts");
     }
   };
 
+  useEffect(() => {
+    getSingleProduct();
+  }, []);
+
   return (
     <div>
-      {" "}
-      {error && (
-        <div class="alert alert-danger" role="alert">
-          This is a danger alert—check it out!
-        </div>
-      )}
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleUpdated}
         style={{
           width: "50%",
           margin: "auto",
@@ -57,7 +71,7 @@ const AddProducts = () => {
         }}
       >
         <div>
-          <h4>Add Product Details</h4>
+          <h4>Edit Product's Detail</h4>
         </div>
         <div className="form-group">
           <label for="exampleInputEmail1">Title</label>
@@ -94,11 +108,11 @@ const AddProducts = () => {
           style={{ marginTop: "10px" }}
           class="btn btn-dark"
         >
-          Add Product
+          Edit Product
         </button>
       </form>
     </div>
   );
 };
 
-export default AddProducts;
+export default UpdateProducts;

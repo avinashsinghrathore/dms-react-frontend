@@ -3,8 +3,6 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CSVLink } from "react-csv";
 
-
-
 const Homepage = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState();
@@ -28,17 +26,19 @@ const Homepage = () => {
   }, []);
 
   // console.log(data);
- 
+
   return (
-      <div style={{padding: "20px" }} >
-       <CSVLink data={data} onClick={() => {}} style={{marginLeft: "1000px"}}>Export Data</CSVLink>
+    <div style={{ padding: "20px" }}>
+      <CSVLink data={data} onClick={() => {}} style={{ marginLeft: "1000px" }}>
+        Export Data
+      </CSVLink>
       <table
         class="table table-striped"
         style={{ width: "90%", margin: " 30px auto 0 auto" }}
       >
         <thead>
           <tr>
-          <th>Sr.no</th>
+            <th>Sr.no</th>
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Phone</th>
@@ -52,7 +52,7 @@ const Homepage = () => {
         <tbody>
           {data?.map((data, index) => (
             <tr key={index}>
-            <td>{index+1}</td>
+              <td>{index + 1}</td>
               <td>{data.name}</td>
               <td>{data.email}</td>
               <td>{data.phone_no}</td>
@@ -77,9 +77,7 @@ const Homepage = () => {
           ))}
         </tbody>
       </table>
-      </div>
-
+    </div>
   );
 };
 export default Homepage;
-
