@@ -22,7 +22,7 @@ const AllProducts = () => {
 
   // delete data
   const handleDelete = async (id) => {
-    const response = await fetch(`http://localhost:8080/api/users/${id}`, {
+    const response = await fetch(`http://localhost:8080/api/product/delete-product/${id}`, {
       method: "DELETE",
     });
 
